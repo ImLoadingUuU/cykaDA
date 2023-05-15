@@ -1,0 +1,6 @@
+{
+    "require": {
+        "directadmin/directadmin": "^1.0",
+      "ext-curl": "*"
+    }
+}
