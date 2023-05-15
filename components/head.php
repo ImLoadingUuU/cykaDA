@@ -87,6 +87,10 @@
             </svg>
             Sponsor
           </a>
+          <a href="https://github.com/ImLoadingUuU/cykaDA" class="btn" target="_blank" rel="noreferrer">
+            <!-- Download SVG icon from http://tabler-icons.io/i/heart -->
+            Powered by CykaDA
+          </a>
         </div>
       </div>
       <div class="d-none d-md-flex">
