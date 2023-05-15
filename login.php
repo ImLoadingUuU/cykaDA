@@ -1,5 +1,6 @@
 <?php
 session_start();
+require "./config.php"
 ?>
 <!doctype html>
 <!--
@@ -92,7 +93,10 @@ session_start();
                 <div class="hr-text">or</div>
                 <div class="card-body">
                     <div class="row">
-                        <div class="col"><a href="#" class="btn w-100">
+                        <div class="col"><a href="<?php
+
+                          echo "https://github.com/login/oauth/authorize?client_id=" . gh_cid."&redirect_uri=http://localhost:8080/CykaDA/api/githubOauth2sign.php&scope=user:email"
+                          ?>" class="btn w-100">
                                 <!-- Download SVG icon from http://tabler-icons.io/i/brand-github -->
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon text-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
