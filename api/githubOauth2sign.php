@@ -43,18 +43,23 @@ if (!empty($parsed) && isset($parsed["access_token"])) {
       break;
     }
   }
+  if (!isset($primaryEmail)) {
+    $_SESSION["message"] = "No Primary Email Selected";
+    header("Location: ../login.php");
+  }
   // connect mysql
   $connect = mysqli_connect(mysql_host, mysql_uname, mysql_pwd, mysql_db);
   $stmt = $connect->prepare("SELECT * FROM da_clients WHERE email = ?");
   $stmt->bind_param("s", $primaryEmail);
   $stmt->execute();
   $result = $stmt->get_result();
-  if ($stmt->get_result()->num_rows > 0) {
-     // Get first row data
+  if ($result->num_rows > 0) {
+    // Get first row data
     $row = mysqli_fetch_assoc($result);
     $_SESSION["username"] = $row["username"];
     $_SESSION["email"] = $row["email"];
     $_SESSION["password"] = $row["password"];
+    header("Location: ../index.php");
   }  else {
     include "../components/githubAuthRegister.php";
   }
