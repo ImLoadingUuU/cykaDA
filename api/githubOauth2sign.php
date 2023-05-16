@@ -56,10 +56,11 @@ if (!empty($parsed) && isset($parsed["access_token"])) {
   if ($result->num_rows > 0) {
     // Get first row data
     $row = mysqli_fetch_assoc($result);
+    echo $row["username"];
     $_SESSION["username"] = $row["username"];
     $_SESSION["email"] = $row["email"];
     $_SESSION["password"] = $row["password"];
-    header("Location: ../index.php");
+    //header("Location: ../index.php");
   }  else {
     include "../components/githubAuthRegister.php";
   }

@@ -3,6 +3,16 @@
 🤓Do Not use on Production Environment🤓
 <hr>
 
+## Feature never added
+
+- Admin Panel (Use PhpMyAdmin as Alternative)
+
+## Feature Planned
+
+- [ ] GDPS Auto Installer
+- [ ] Email Auth
+- [x] Forget Password
+
 A Billing System for a small business.
 ## Usage Policy
 You can use this on your service, by the way. Please credit this GitHub repo.
