@@ -1,6 +1,8 @@
 
 # CykaDA
 🤓Do Not use on Production Environment🤓
+
+🥰 Import database.sql to your beautiful mysql database
 <hr>
 
 ## Feature never added
