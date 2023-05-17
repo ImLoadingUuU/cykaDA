@@ -42,15 +42,14 @@ $result = $stmt->get_result();
 
           </div>
         </div>
-       <?php if($_SESSION["message"]){ ?>
-         <div class="alert alert-red">
-           <h4 class="alert-title">Something Went Wrong</h4>
-           <div class="text-muted"><?php echo $_SESSION["message"]?></div>
-         </div>
+        <?php if (isset($_SESSION["message"])) { ?>
+          <div class="alert alert-<?php echo $_SESSION["message"]["type"] ?? "danger" ?>" role="alert">
 
-       <?php }
-       $_SESSION["message"] = null
-       ?>
+            <h4 class="alert-title"><?php echo $_SESSION["message"]["title"]; ?></h4>
+            <div class="text-muted"><?php echo $_SESSION["message"]["message"]; ?></div>
+          </div>
+        <?php }
+        $_SESSION["message"] = null ?>
     </div>
 
 

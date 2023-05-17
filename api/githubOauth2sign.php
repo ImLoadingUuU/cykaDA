@@ -3,7 +3,12 @@ require_once "../config.php";
 session_start();
 $code = $_GET["code"];
 if (!$code) {
-  $_SESSION["message"] = "Invalid Login";
+  $_SESSION["message"] = array(
+    "type" => "danger",
+    "title" => "Something Went Wrong.",
+    "message" => "Invalid Login."
+
+  );
   header("Location: ../login.php");
   return;
 }
@@ -44,7 +49,12 @@ if (!empty($parsed) && isset($parsed["access_token"])) {
     }
   }
   if (!isset($primaryEmail)) {
-    $_SESSION["message"] = "No Primary Email Selected";
+    $_SESSION["message"] = array(
+      "type" => "danger",
+      "title" => "Something Went Wrong.",
+      "message" => "No Primary Email Exists"
+
+    );
     header("Location: ../login.php");
   }
   // connect mysql
@@ -60,14 +70,18 @@ if (!empty($parsed) && isset($parsed["access_token"])) {
     $_SESSION["username"] = $row["username"];
     $_SESSION["email"] = $row["email"];
     $_SESSION["password"] = $row["password"];
-    //header("Location: ../index.php");
+    header("Location: ../index.php");
   }  else {
     include "../components/githubAuthRegister.php";
   }
   $stmt->close();
 
 } else {
-  $_SESSION["message"] = "Access Token Not Found";
+  $_SESSION["message"] = array(
+    "type" => "danger",
+    "message" => "GitHub OAuth2 Error",
+    "title" => "Something Went Wrong."
+  );
   header("Location: ../login.php");
 }
 

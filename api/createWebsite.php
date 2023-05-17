@@ -34,6 +34,20 @@ if ($result->num_rows == 0) {
   header("Location: ../index.php");
   return;
 }
+// Check Free Account Hit Limit
+$stmt = $connect->prepare("SELECT * FROM da_website WHERE client_email = ?");
+$stmt->bind_param("s", $_SESSION['email']);
+$stmt->execute();
+$result = $stmt->get_result();
+if ($result->num_rows >= 1) {
+  $_SESSION["message"] = array(
+    "type" => "danger",
+    "title" => "Website Creation Error",
+    "message" => "You have reached the limit of free website"
+  );
+  header("Location: ../index.php");
+  return;
+}
 $ch = curl_init();
 $params = array(
   "action" => "create",
@@ -59,13 +73,21 @@ $parsed = null;
 parse_str($result, $parsed);
 if (curl_error($ch)) {
 
-  $_SESSION["message"] = "Something went wrong while creating account";
+  $_SESSION["message"] = array(
+    "type" => "danger",
+    "title" => "Website Creation Error",
+    "message" => "Something Went Wrong"
+  );
   header("Location: ../index.php");
   return;
 }
 if ($parsed["error"]) {
 
-  $_SESSION["message"] = "Something went wrong while create website - " . $parsed["details"];
+  $_SESSION["message"] = array(
+    "type" => "danger",
+    "title" => "Website Creation Error",
+    "message" => $parsed["details"]
+  );
   header("Location: ../index.php");
   return;
 }
@@ -73,4 +95,9 @@ $nt = date("Y-m-d H:i:s");
 $stmt = $connect->prepare("INSERT INTO da_website (username, password, suspended,date_created, client_email,uid) VALUES (?, ?, '0', \" " . date("Y-m-d H:i:s") . "\", ?," . rand(1, 2147483647) . ")");
 $stmt->bind_param("sss", $_POST["username"], $_POST["password"], $_SESSION["email"],);
 $stmt->execute();
+$_SESSION["message"] = array(
+  "type" => "success",
+  "title" => "Website Created",
+  "message" => "Congratulations! Your website has been created."
+);
 header("Location: ../index.php");

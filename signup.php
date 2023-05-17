@@ -46,9 +46,10 @@ require_once "config.php";
                 <div class="card-body">
                     <h2 class="h2 text-center mb-4">Register your account</h2>
                     <?php if (isset($_SESSION["message"])) { ?>
-                        <div class="alert alert-danger" role="alert">
-                            <h4 class="alert-title">Nah,Can Sign Up?</h4>
-                            <div class="text-muted"><?php echo $_SESSION["message"]; ?></div>
+                        <div class="alert alert-<?php echo $_SESSION["message"]["type"] ?? "error" ?>" role="alert">
+
+                            <h4 class="alert-title"><?php echo $_SESSION["message"]["title"]; ?></h4>
+                            <div class="text-muted"><?php echo $_SESSION["message"]["message"]; ?></div>
                         </div>
                     <?php }
                     $_SESSION["message"] = null ?>
@@ -93,7 +94,7 @@ require_once "config.php";
                     <div class="row">
                         <div class="col"><a href="<?php
 
-                          echo "https://github.com/login/oauth/authorize?client_id=" . gh_cid."&redirect_uri=" . billingPortalPath . " /api/githubOauth2sign.php&scope=user:email"
+                          echo "https://github.com/login/oauth/authorize?client_id=" . gh_cid."&redirect_uri=" . billingPortalPath . "/api/githubOauth2sign.php&scope=user:email"
                           ?>" class="btn w-100">
                                 <!-- Download SVG icon from http://tabler-icons.io/i/brand-github -->
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon text-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">

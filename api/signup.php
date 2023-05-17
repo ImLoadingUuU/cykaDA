@@ -4,7 +4,12 @@ include "../module/emailValidator.php";
 const validator = new emailValidator();
 session_start();
 if (empty($_GET["email"]) || empty($_GET["password"]) || empty($_GET["username"])) {
-  $_SESSION["message"] = "Please fill in all fields";
+  $_SESSION["message"] = array(
+    "type" => "danger",
+    "message" => "Please fill in all fields",
+    "title" => "Sign Up Failed"
+
+  );
   echo "Field Required";
   header("Location: ../signup.php");
   return;
@@ -12,12 +17,22 @@ if (empty($_GET["email"]) || empty($_GET["password"]) || empty($_GET["username"]
 
 if (!filter_var($_GET["email"], FILTER_VALIDATE_EMAIL)) {
   echo "Invalid Email";
-  $_SESSION["message"] = "Invalid email format";
+  $_SESSION["message"] = array(
+    "type" => "danger",
+    "message" => "Invalid email format",
+    "title" => "Please Check your email is valid"
+
+  );
   header("Location: ../signup.php");
   return;
 }
 if (empty($_GET["h-captcha-response"])) {
-  $_SESSION["message"] = "Please fill in captcha";
+  $_SESSION["message"] = array(
+    "type" => "danger",
+    "message" => "Captcha is Required.",
+    "title" => "Register Failed"
+
+  );
   echo "Captcha Required";
   header("Location: ../signup.php");
   return;
@@ -32,14 +47,24 @@ $CaptchaResult = curl_exec($CaptchaCurl);
 curl_close($CaptchaCurl);
 // check captcha
 if (!json_decode($CaptchaResult, true)["success"]) {
-  $_SESSION["message"] = "Captcha Failed";
+  $_SESSION["message"] = array(
+    "type" => "danger",
+    "message" => "Captcha Error.",
+    "title" => "Incorrect Captcha."
+
+  );
   echo "Captcha Failed";
   header("Location: ../signup.php");
   return;
 }
 $res = validator->validate($_GET["email"]);
 if (!$res["result"]) {
-  $_SESSION["message"] =  $res["message"];
+  $_SESSION["message"] = array(
+    "type" => "danger",
+    "message" => $res["message"],
+    "title" => "Email is not valid"
+
+  );
   header("Location: ../signup.php");
   return;
 }
@@ -61,7 +86,12 @@ if ($stmt->error) {
 }
 
 if ($result->num_rows > 0) {
-  $_SESSION["message"] = "Email or Username already exists";
+  $_SESSION["message"] = array(
+    "type" => "danger",
+    "message" => "Email or username already exists.",
+    "title" => "Cannot Register."
+
+  );
   header("Location: ../signup.php");
   return;
 }
@@ -72,10 +102,20 @@ $stmt->bind_param("sss", $hspc, $_GET["email"], $_GET["password"]);
 $stmt->execute();
 if ($stmt->error) {
   echo "Something went wrong";
-  $_SESSION["message"] = "Something went wrong while creating account";
+  $_SESSION["message"] = array(
+    "type" => "danger",
+    "message" => "Something Went Wrong Please Try Again.",
+    "title" => "Cannot Register."
+
+  );
   header("Location: ../signup.php");
   return;
 }
-$_SESSION["message"] = "Account created successfully";
+$_SESSION["message"] = array(
+  "type" => "success",
+  "message" => "Account Created",
+  "title" => "Congrats!"
+
+);
 header("Location: ../login.php");
 

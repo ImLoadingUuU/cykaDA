@@ -2,14 +2,24 @@
 require "../config.php";
 session_start();
 if(empty($_GET["email"]) || empty($_GET["password"])) {
-  $_SESSION["message"] = "Please fill in all fields";
+  $_SESSION["message"] = array(
+    "type" => "danger",
+    "message" => "Please fill in all fields",
+    "title" => "Login Failed"
+
+  );
   header("location: ../login.php");
   return;
 }
 // mysql
 $connect = mysqli_connect(mysql_host, mysql_uname, mysql_pwd, mysql_db,mysql_port);
 if (mysqli_connect_errno()) {
-  $_SESSION["message"] = "Failed to connect to MySQL: " . mysqli_connect_error();
+  $_SESSION["message"] = array(
+    "type" => "danger",
+    "message" => "Cannot Connect To Database",
+    "title" => "Login Failed"
+
+  );
   header("location: ../login.php");
   return;
 } else {
@@ -30,7 +40,12 @@ if ($result->num_rows > 0) {
   $_SESSION["password"] = $row["password"];
   header("Location: ../index.php");
 } else {
-  $_SESSION["message"] = "Account not found";
+  $_SESSION["message"] = array(
+    "type" => "danger",
+    "message" => "Invalid username or password",
+    "title" => "Login Failed"
+
+  );
   header("Location: ../login.php");
   return;
 }
