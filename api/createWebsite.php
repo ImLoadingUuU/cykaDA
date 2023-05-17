@@ -1,6 +1,6 @@
 <?php
 require_once "../config.php";
-require_once "../module/errorMessageModule.php";
+require_once "../module/emailValidator.php";
 session_start();
 if (!isset($_SESSION["email"]) ?? !isset($_SESSION["password"])) {
 

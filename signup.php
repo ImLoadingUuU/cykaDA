@@ -1,5 +1,6 @@
 <?php
 session_start();
+require_once "config.php";
 ?>
 <!doctype html>
 <!--
@@ -13,7 +14,8 @@ session_start();
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Sign U[</title>
+    <title>Sign Up</title>
+  <script src="https://js.hcaptcha.com/1/api.js" async defer></script>
     <!-- CSS files -->
     <link href="./dist/css/tabler.min.css?1674944402" rel="stylesheet" />
     <link href="./dist/css/tabler-flags.min.css?1674944402" rel="stylesheet" />
@@ -81,6 +83,7 @@ session_start();
                             </label>
                         </div>
                         <div class="form-footer">
+                          <div class="h-captcha" data-sitekey="<?php echo hCaptchaSiteKey ?>"></div>
                             <button type="submit" class="btn btn-primary w-100">Sign up</button>
                         </div>
                     </form>
@@ -90,7 +93,7 @@ session_start();
                     <div class="row">
                         <div class="col"><a href="<?php
 
-                          echo "https://github.com/login/oauth/authorize?client_id=" . gh_cid."&redirect_uri=http://localhost:8080/CykaDA/api/githubOauth2sign.php&scope=user:email"
+                          echo "https://github.com/login/oauth/authorize?client_id=" . gh_cid."&redirect_uri=" . billingPortalPath . " /api/githubOauth2sign.php&scope=user:email"
                           ?>" class="btn w-100">
                                 <!-- Download SVG icon from http://tabler-icons.io/i/brand-github -->
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon text-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">

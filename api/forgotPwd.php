@@ -1,15 +1,30 @@
 <?php
 session_start();
-require ("../config.php");
+require_once "../config.php";
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+require '../vendor/phpmailer/phpmailer/src/Exception.php';
+require '../vendor/phpmailer/phpmailer/src/PHPMailer.php';
+require '../vendor/phpmailer/phpmailer/src/SMTP.php';
+// 实例化PHPMailer对象
+$mail = new PHPMailer();
+$mail->isSMTP();
+$mail->Host       = smtpHost;
+$mail->SMTPAuth   = true;
+$mail->Username   = smtpUsername;
+$mail->Password   = smtpPassword;
+$mail->SMTPSecure = smtpSecure;
+$mail->Port       = smtpPort;
+
 if (!isset($_GET["email"])) {
   echo "Missing Mail";
   $_SESSION["message"] = "Missing E-mail";
-  header("Location: ../forgotP.php");
+  header("Location: ../forgot.php");
   return;
 }
 // Create SQL Connection
 $connect = mysqli_connect(mysql_host, mysql_uname, mysql_pwd, mysql_db);
-if ($_GET["code"]) {
+if (isset($_GET["code"])) {
   if($_GET["password"]) {
     echo "Password Not Changed - Missing Password Parameter";
     $_SESSION["message"] = "Missing Password Parameter";
@@ -60,11 +75,22 @@ if ($result->num_rows > 0) {
     echo $stmt->error;
     die();
   }
+
   $to = $_GET["email"];
   $subject = "Password Recovery";
   $message = "Your Recovery Code is " . $code;
   $headers = "From: SiteNexus Team";
-  mail($to, $subject, $message, $headers);
+  $mail->setFrom(smtpUsername, 'SiteNexus Team');
+  $mail->addAddress($to);
+  $mail->isHTML(true);
+  $mail->Body = $message;
+  $mail->Subject = $subject;
+  if(!$mail->send()){
+
+    $_SESSION["message"] = "Mailer Error: " . $mail->ErrorInfo;
+    header("Location: ../forgot.php");
+    return;
+  }
   $_SESSION["message"] = "Recovery Code Sent";
   header("Location: ../forgot.php");
 } else {
